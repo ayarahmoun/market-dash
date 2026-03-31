@@ -1,0 +1,471 @@
+:root {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-card: #0f3460;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --green: #00c853;
+    --red: #ff1744;
+    --yellow: #ffd600;
+    --blue: #00bcd4;
+    --purple: #7c4dff;
+    --border: #2a2a4a;
+    --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", "Consolas", monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 20px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.brand {
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.nav-tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.tab {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    transition: background 0.2s;
+}
+
+.tab:hover {
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.tab.active {
+    background: var(--bg-card);
+    color: var(--blue);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-refresh {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 5px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 12px;
+}
+
+.btn-refresh:hover {
+    background: var(--blue);
+    color: #fff;
+}
+
+.last-updated {
+    color: var(--text-secondary);
+    font-size: 11px;
+}
+
+/* Container */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.strategy-desc {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    font-size: 12px;
+}
+
+/* Tables */
+.signals-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.signals-table thead th {
+    background: var(--bg-card);
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.signals-table thead th.num {
+    text-align: right;
+}
+
+.signals-table thead th:hover {
+    color: var(--blue);
+}
+
+.signals-table tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.signals-table tbody tr:hover {
+    background: rgba(0, 188, 212, 0.05);
+}
+
+.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Asset link */
+.asset-link {
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+.asset-link:hover {
+    color: var(--blue);
+}
+
+.ticker {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.asset-name {
+    color: var(--text-secondary);
+    font-size: 11px;
+}
+
+.category-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    margin-left: 6px;
+}
+
+/* Signal badges */
+.signal-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.signal-strong-buy {
+    background: rgba(0, 200, 83, 0.2);
+    color: var(--green);
+    border: 1px solid var(--green);
+}
+
+.signal-buy {
+    background: rgba(0, 200, 83, 0.1);
+    color: var(--green);
+}
+
+.signal-hold {
+    background: rgba(160, 160, 160, 0.1);
+    color: var(--text-secondary);
+}
+
+.signal-sell {
+    background: rgba(255, 23, 68, 0.1);
+    color: var(--red);
+}
+
+.signal-strong-sell {
+    background: rgba(255, 23, 68, 0.2);
+    color: var(--red);
+    border: 1px solid var(--red);
+}
+
+/* Color classes */
+.positive { color: var(--green); }
+.negative { color: var(--red); }
+.overbought { color: var(--red); font-weight: bold; }
+.oversold { color: var(--green); font-weight: bold; }
+.trending { color: var(--yellow); font-weight: bold; }
+
+/* Sub-signal detail rows */
+.detail-row.hidden { display: none; }
+
+.sub-signals {
+    display: flex;
+    gap: 16px;
+    padding: 8px 0;
+    flex-wrap: wrap;
+}
+
+.sub-signal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 180px;
+}
+
+.sub-name {
+    font-size: 11px;
+    color: var(--text-secondary);
+    min-width: 80px;
+}
+
+.score-bar {
+    width: 80px;
+    height: 8px;
+    background: var(--bg-primary);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.score-fill {
+    position: absolute;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.fill-positive { background: var(--green); }
+.fill-negative { background: var(--red); }
+
+.score-center {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: var(--text-secondary);
+}
+
+.sub-score {
+    font-size: 11px;
+    min-width: 40px;
+    text-align: right;
+}
+
+/* Indicator value in strategy view */
+.indicator-val {
+    color: var(--blue);
+    font-size: 12px;
+}
+
+/* Detail page */
+.detail-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.detail-title h1 {
+    margin-bottom: 4px;
+}
+
+.ticker-light {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.price-large {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.change {
+    font-size: 16px;
+    margin-left: 8px;
+}
+
+.signal-large {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.signal-large .signal-badge {
+    font-size: 14px;
+    padding: 6px 16px;
+}
+
+.composite-score {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Signal breakdown cards */
+.signal-breakdown {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.breakdown-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+}
+
+.card-header {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.card-score {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.score-bar-h {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-primary);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.score-fill-h {
+    height: 100%;
+    border-radius: 3px;
+}
+
+.card-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* Charts */
+.detail-chart {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 8px;
+    border: 1px solid var(--border);
+}
+
+/* Compare page */
+.compare-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.compare-chart {
+    margin-bottom: 12px;
+}
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.summary-table th {
+    padding: 6px 10px;
+    text-align: left;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+.summary-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .nav-tabs {
+        order: 3;
+    }
+    .signals-table {
+        font-size: 11px;
+    }
+    .signals-table thead th,
+    .signals-table tbody td {
+        padding: 6px 8px;
+    }
+    .detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

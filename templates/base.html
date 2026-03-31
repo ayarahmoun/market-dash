@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Market Signals{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="brand">Market Signals</a>
+        <div class="nav-tabs">
+            <a href="/" class="tab {% if active_tab == 'overview' %}active{% endif %}">Overview</a>
+            {% for key, name in strategies.items() %}
+            <a href="/strategy/{{ key }}" class="tab {% if active_tab == key %}active{% endif %}">{{ name }}</a>
+            {% endfor %}
+            <a href="/compare" class="tab {% if active_tab == 'compare' %}active{% endif %}">Compare</a>
+        </div>
+        <div class="nav-actions">
+            <button id="refresh-btn" class="btn-refresh" onclick="refreshData()">Refresh</button>
+            <span class="last-updated">{{ last_updated or "Loading..." }}</span>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>Data source: Yahoo Finance | Signals are for informational purposes only, not financial advice.</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

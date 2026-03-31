@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Strategy Comparison{% endblock %}
+
+{% block head %}
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<h1>Strategy Comparison</h1>
+<p class="strategy-desc">
+    Simulated returns over the last ~120 trading days. Each strategy independently decides long/flat positions.
+</p>
+
+{% for ticker, chart_data in comparison_charts.items() %}
+<div class="compare-card">
+    <h2>{{ asset_map[ticker].label }} ({{ ticker }})</h2>
+    <div id="chart-{{ ticker }}" class="compare-chart"></div>
+
+    {% if ticker in summary_data %}
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>Strategy</th>
+                <th class="num">Return</th>
+                <th class="num">Win Rate</th>
+                <th class="num">Sharpe</th>
+                <th class="num">Trades</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for strat, metrics in summary_data[ticker].items() %}
+            <tr>
+                <td>{{ strategies.get(strat, strat) }}</td>
+                <td class="num {% if metrics.total_return > 0 %}positive{% elif metrics.total_return < 0 %}negative{% endif %}">
+                    {{ "%.2f"|format(metrics.total_return) }}%
+                </td>
+                <td class="num">{{ "%.1f"|format(metrics.win_rate) }}%</td>
+                <td class="num {% if metrics.sharpe > 0 %}positive{% elif metrics.sharpe < 0 %}negative{% endif %}">
+                    {{ "%.2f"|format(metrics.sharpe) }}
+                </td>
+                <td class="num">{{ metrics.num_trades }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+{% for ticker, chart_data in comparison_charts.items() %}
+(function() {
+    var data = {{ chart_data | tojson }};
+    Plotly.newPlot('chart-{{ ticker }}', data.data, data.layout, {responsive: true});
+})();
+{% endfor %}
+</script>
+{% endblock %}

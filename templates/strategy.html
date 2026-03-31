@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}{{ display_name }} Strategy{% endblock %}
+
+{% block content %}
+<h1>{{ display_name }} Strategy</h1>
+<p class="strategy-desc">
+    {% if strategy_name == "ma_crossover" %}
+    EMA 9/21 crossover for short-term trend, confirmed by SMA 50/200 for long-term context.
+    {% elif strategy_name == "rsi" %}
+    RSI 14-period oscillator. Below 30 = oversold (buy), above 70 = overbought (sell).
+    {% elif strategy_name == "macd" %}
+    MACD line vs signal line crossovers and histogram momentum direction.
+    {% elif strategy_name == "bollinger" %}
+    Price position within Bollinger Bands (20,2). Near lower band = buy, near upper = sell.
+    {% elif strategy_name == "volume" %}
+    Volume relative to 20-day average. High volume confirms directional moves.
+    {% elif strategy_name == "adx" %}
+    ADX measures trend strength. Above 25 = trending, +DI/-DI for direction.
+    {% endif %}
+</p>
+
+<table class="signals-table" id="signals-table">
+    <thead>
+        <tr>
+            <th data-sort="label" class="sortable">Asset</th>
+            <th data-sort="price" class="sortable num">Price</th>
+            <th data-sort="change_pct" class="sortable num">Change</th>
+            <th class="sortable">Indicator</th>
+            <th data-sort="score" class="sortable num">Score</th>
+            <th data-sort="signal_label" class="sortable">Signal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in signals %}
+        <tr>
+            <td>
+                <a href="/asset/{{ s.ticker }}" class="asset-link">
+                    <span class="ticker">{{ s.ticker }}</span>
+                    <span class="asset-name">{{ s.label }}</span>
+                </a>
+                <span class="category-badge">{{ s.category }}</span>
+            </td>
+            <td class="num">${{ "%.2f"|format(s.price) }}</td>
+            <td class="num {% if s.change_pct > 0 %}positive{% elif s.change_pct < 0 %}negative{% endif %}">
+                {{ "%.2f"|format(s.change_pct) }}%
+            </td>
+            <td class="indicator-val">{{ s.indicator_val }}</td>
+            <td class="num {% if s.score > 0 %}positive{% elif s.score < 0 %}negative{% endif %}">
+                {{ "%.3f"|format(s.score) }}
+            </td>
+            <td>
+                <span class="signal-badge signal-{{ s.signal_label|lower|replace(' ', '-') }}">
+                    {{ s.signal_label }}
+                </span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

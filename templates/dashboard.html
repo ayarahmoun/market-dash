@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Market Signals - Dashboard{% endblock %}
+
+{% block content %}
+<h1>Daily Market Signals</h1>
+
+<table class="signals-table" id="signals-table">
+    <thead>
+        <tr>
+            <th data-sort="label" class="sortable">Asset</th>
+            <th data-sort="price" class="sortable num">Price</th>
+            <th data-sort="change_pct" class="sortable num">Change</th>
+            <th data-sort="rsi" class="sortable num">RSI</th>
+            <th data-sort="macd_hist" class="sortable num">MACD Hist</th>
+            <th data-sort="adx" class="sortable num">ADX</th>
+            <th data-sort="vol_ratio" class="sortable num">Vol Ratio</th>
+            <th data-sort="bb_pctb" class="sortable num">%B</th>
+            <th data-sort="composite_score" class="sortable num">Score</th>
+            <th data-sort="signal_label" class="sortable">Signal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in signals %}
+        <tr class="asset-row" data-ticker="{{ s.ticker }}">
+            <td>
+                <a href="/asset/{{ s.ticker }}" class="asset-link">
+                    <span class="ticker">{{ s.ticker }}</span>
+                    <span class="asset-name">{{ s.label }}</span>
+                </a>
+                <span class="category-badge">{{ s.category }}</span>
+            </td>
+            <td class="num">${{ "%.2f"|format(s.price) }}</td>
+            <td class="num {% if s.change_pct > 0 %}positive{% elif s.change_pct < 0 %}negative{% endif %}">
+                {{ "%.2f"|format(s.change_pct) }}%
+            </td>
+            <td class="num {% if s.rsi > 70 %}overbought{% elif s.rsi < 30 %}oversold{% endif %}">
+                {{ "%.1f"|format(s.rsi) }}
+            </td>
+            <td class="num {% if s.macd_hist > 0 %}positive{% else %}negative{% endif %}">
+                {{ "%.4f"|format(s.macd_hist) }}
+            </td>
+            <td class="num {% if s.adx > 25 %}trending{% endif %}">
+                {{ "%.1f"|format(s.adx) }}
+            </td>
+            <td class="num">{{ "%.2f"|format(s.vol_ratio) }}x</td>
+            <td class="num">{{ "%.2f"|format(s.bb_pctb) }}</td>
+            <td class="num {% if s.composite_score > 0 %}positive{% elif s.composite_score < 0 %}negative{% endif %}">
+                {{ "%.3f"|format(s.composite_score) }}
+            </td>
+            <td>
+                <span class="signal-badge signal-{{ s.signal_label|lower|replace(' ', '-') }}">
+                    {{ s.signal_label }}
+                </span>
+            </td>
+        </tr>
+        <tr class="detail-row hidden" id="detail-{{ s.ticker }}">
+            <td colspan="10">
+                <div class="sub-signals">
+                    {% for key, score in s.sub_signals.items() %}
+                    <div class="sub-signal">
+                        <span class="sub-name">{{ strategies.get(key, key) }}</span>
+                        <div class="score-bar">
+                            <div class="score-fill {% if score > 0 %}fill-positive{% else %}fill-negative{% endif %}"
+                                 style="width: {{ (score|abs * 50)|int }}%; {% if score > 0 %}left: 50%{% else %}right: 50%{% endif %}">
+                            </div>
+                            <div class="score-center"></div>
+                        </div>
+                        <span class="sub-score {% if score > 0 %}positive{% elif score < 0 %}negative{% endif %}">
+                            {{ "%.2f"|format(score) }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
