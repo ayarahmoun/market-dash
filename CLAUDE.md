@@ -2,10 +2,13 @@
 
 Daily market signals dashboard with technical analysis for swing trading.
 
+See [.claude/skills.md](.claude/skills.md) for coding standards and conventions.
+
 ## How to run
 
 ```bash
 cd /Users/aya/market-dash
+uv sync
 uv run python app.py
 # Open http://127.0.0.1:8050
 ```
@@ -24,8 +27,6 @@ uv run python app.py
 
 ## Key conventions
 
-- Python 3.9 compatible (use `from __future__ import annotations`)
-- Use `uv` for dependency management (not pip)
 - All indicator math uses pandas/numpy directly (no ta-lib)
 - Data cached as pickle with TTL (15 min market hours, 6 hours after close)
 - Signal scores range from -1.0 (strong sell) to +1.0 (strong buy)
